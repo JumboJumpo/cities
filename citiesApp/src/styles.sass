@@ -1,0 +1,25 @@
+/* You can add global styles to this file, and also import other style files */
+body 
+    background-color: black
+
+.flex
+    display: flex
+
+$list: 0, 5, 10, 15, 20, 25, 30, 50
+
+@each $n in $list 
+  .m-l-#{$n} 
+    margin-left: #{$n}px !important
+  
+  .m-b-#{$n} 
+    margin-bottom: #{$n}px !important
+  
+  .m-t-#{$n} 
+    margin-top: #{$n}px !important
+  
+  .m-r-#{$n} 
+    margin-right: #{$n}px !important
+  
+  .m-#{$n} 
+    margin: #{$n}px !important
+  

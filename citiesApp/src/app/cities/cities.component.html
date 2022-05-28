@@ -1,0 +1,5 @@
+<p-tabView [(activeIndex)]="activeIndex" (onChange)="changeCity($event)">
+    <p-tabPanel *ngFor="let item of citiesList" header="{{item}}" >
+        <app-weather *ngIf="item === activateRoute" [city]='item' ></app-weather>
+    </p-tabPanel>
+  </p-tabView>

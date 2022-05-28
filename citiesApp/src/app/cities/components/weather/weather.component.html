@@ -1,0 +1,17 @@
+<div class="flex">
+    <div>
+        <img [src]="'http://openweathermap.org/img/wn/'+ weatherRoot?.weather[0].icon +'@2x.png'">
+    </div>
+    <div>
+        <h1>{{weatherRoot?.name}}</h1>
+        <div class="flex">
+            <h3>{{weatherRoot?.main.temp | celsius}}</h3>
+            <h3 class="m-l-10">{{weatherRoot?.main.pressure}}</h3>
+            <h3 class="m-l-10">{{weatherRoot?.main.humidity}}</h3>
+        </div>
+        <p>{{weatherRoot?.weather[0].description}}</p>
+    </div>
+</div>
+<div *ngIf="businesses$ | async">
+    <app-business-card *ngFor="let item of (businesses$ | async)" [business]="item"></app-business-card>
+</div>
