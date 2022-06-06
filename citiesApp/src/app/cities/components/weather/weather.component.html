@@ -12,6 +12,7 @@
         <p>{{weatherRoot?.weather[0].description}}</p>
     </div>
 </div>
-<div *ngIf="businesses$ | async">
-    <app-business-card *ngFor="let item of (businesses$ | async)" [business]="item"></app-business-card>
+<div class="flex-center" [appLoader]="isLoading"></div>
+<div class="container-grid" *ngIf="businesses$ | async">
+    <app-business-card *ngFor="let item of (businesses$ | async)?.businesses" [business]="item"></app-business-card>
 </div>

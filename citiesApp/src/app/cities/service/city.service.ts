@@ -2,13 +2,15 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { LonLat } from '../environment/cities.env';
-import { BusinessRoot } from '../models/business';
+import { Business, BusinessRoot } from '../models/business';
 import { WeatherRoot } from '../models/weather';
-import { map } from "rxjs/operators";
+import { tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 @Injectable()
 export class CityService {
 
+  isLoading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   actualCity: string = 'Napoli';
 
   constructor(private http: HttpClient) { }
@@ -25,16 +27,19 @@ export class CityService {
     return this.http.get<WeatherRoot>(`https://api.openweathermap.org/data/2.5/weather`, { params: httpParams });
   }
 
-  getBusiness(city) {
+  getBusiness(city): Observable<BusinessRoot | Business[]> {
+    this.isLoading$.next(true);
     let business = {
       location: city
     }
     const httpParams = new HttpParams({ fromObject: business });
-    const httpHeaders = new HttpHeaders({ 'Authorization': 'Bearer ' + environment.yelp })
-    return this.http.get<BusinessRoot>(`https://api.yelp.com/v3/businesses/search`, { params: httpParams, headers: httpHeaders }).pipe(map((res: BusinessRoot) => { return res.businesses }));
+    const httpHeaders = new HttpHeaders({ 'Authorization': 'Bearer ' + environment.yelp, 'Connection': 'keep-alive' });
+    return this.http.get<BusinessRoot>(`/api/yelp`, { headers: httpHeaders, params: httpParams }).pipe(tap(res => {
+      this.isLoading$.next(false);
+      return (res as BusinessRoot).businesses
+    })
+    );
   }
 }
-function tap(): import("rxjs").OperatorFunction<WeatherRoot, unknown> {
-  throw new Error('Function not implemented.');
-}
+
 

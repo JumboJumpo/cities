@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared/shared.module';
 import { WeatherComponent } from '../components/weather/weather.component';
 import { BusinessCardComponent } from '../components/business-card/business-card.component';
+import { CityGuard } from '../service/city-guard.service';
 
 
 
@@ -20,12 +21,12 @@ import { BusinessCardComponent } from '../components/business-card/business-card
     CommonModule,
     SharedModule,
     RouterModule.forChild([
-      { path: '', component: CitiesComponent },
-      { path: ':city', component: CitiesComponent }
+      { path: '', redirectTo: '/cities/Napoli', pathMatch: 'full', component: CitiesComponent },
+      { path: ':city', component: CitiesComponent, canActivate: [CityGuard] },
     ])
   ],
   providers: [
-    CityService
+    CityService, CityGuard
   ]
 })
 export class CitiesModule { }

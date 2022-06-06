@@ -9,7 +9,6 @@
 
 # dependencies
 /node_modules
-/citiesMiddleware/node_modules
 
 # profiling files
 chrome-profiler-events*.json

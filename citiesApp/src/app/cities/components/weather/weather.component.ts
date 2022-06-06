@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { Business, BusinessRoot } from '../../models/business';
 import { WeatherRoot } from '../../models/weather';
 import { CityService } from '../../service/city.service';
@@ -13,13 +14,18 @@ export class WeatherComponent implements OnInit {
 
   @Input() city: string;
   weatherRoot: WeatherRoot;
-  businesses$: Observable<Business[]>;
+  businesses$: Observable<BusinessRoot | Business[]>;
+  isLoading = false;
 
-  constructor(private cityService: CityService) {}
+  constructor(private cityService: CityService) {
+    this.cityService.isLoading$.subscribe(res => {
+      this.isLoading = res;
+    });
+  }
 
 
   ngOnInit(): void {
-    this.businesses$ = this.cityService.getBusiness(this.cityService.actualCity);
+    this.businesses$ = this.cityService.getBusiness(this.city)
     let tempCity: any = JSON.parse(localStorage.getItem(this.city))
     if (tempCity) {
       let now = new Date();
@@ -33,9 +39,6 @@ export class WeatherComponent implements OnInit {
       this.weatherRoot = res;
       let now = new Date().getTime();
       localStorage.setItem(this.city, JSON.stringify({ time:now, weather: {...this.weatherRoot}}));
-    })
-    this.cityService.getBusiness(this.city).subscribe(res => {
-      console.log(res);
     })
   }
 

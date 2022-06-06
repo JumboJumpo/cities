@@ -3,22 +3,27 @@ import { CommonModule } from '@angular/common';
 import { TabViewModule } from 'primeng/tabview';
 import { CelsiusPipe } from 'src/app/pipes/celsius.pipe';
 import { CardModule, } from 'primeng/card';
-
+import { LoaderComponent } from '../components/loader/loader.component';
+import { LoaderDirective } from '../../directives/loader.directive';
 
 
 @NgModule({
   declarations: [
-    CelsiusPipe
+    LoaderComponent,
+    CelsiusPipe,
+    LoaderDirective
   ],
   imports: [
     CommonModule,
     TabViewModule,
-    CardModule,
+    CardModule
   ],
   exports: [
     TabViewModule,
     CardModule,
-    CelsiusPipe
+    CelsiusPipe,
+    LoaderComponent,
+    LoaderDirective
   ]
 })
 export class SharedModule { }
